@@ -1,1 +1,2 @@
-# test1
+# discord-bot
+Citra bot for Discord
