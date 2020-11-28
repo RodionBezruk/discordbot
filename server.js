@@ -21,7 +21,6 @@ client.on('ready', () => {
   data.readWarnings();
   data.readBans();
   logger.info('Startup complete. Bot is now online and connected to server.');
-  app.logChannel.sendMessage(`Startup complete.`);
 });
 client.on('message', message => {
   if (message.author.bot && message.content.startsWith('.ban') == false) { return; }
