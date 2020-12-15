@@ -6,6 +6,7 @@ var logger = require('./logging.js');
 var app = require('./app.js');
 var data = require('./data.js');
 var cachedModules = [];
+var cachedTriggers = [];
 var client = new discord.Client();
 function findArray(haystack, arr) {
     return arr.some(function (v) {
@@ -15,6 +16,9 @@ function findArray(haystack, arr) {
 client.on('ready', () => {
   require("fs").readdirSync('./commands/').forEach(function(file) {
     cachedModules[file] = require(`./commands/${file}`);
+  });
+  require("fs").readdirSync('./triggers/').forEach(function(file) {
+    cachedTriggers.push(require(`./triggers/${file}`));
   });
   app.logChannel = client.channels.get(config.logChannel);
   app.guild = app.logChannel.guild;
@@ -54,6 +58,14 @@ client.on('message', message => {
       }
     } else {
     }
+  } else {
+    cachedTriggers.forEach(function(trigger) {
+        if (trigger.roles == undefined || findArray(message.member.roles.map(function(x) { return x.name; }), trigger.roles)) {
+          if (trigger.trigger(message) == true) {
+              trigger.execute(message);
+          }
+        }
+    });
   }
 });
 client.login(config.clientLoginToken);
