@@ -48,21 +48,27 @@ client.on('message', message => {
       }
       logger.info(`${message.author.username} ${message.author} [Channel: ${message.channel}] triggered command: ${message.content}`);
       message.delete();
-      if (cachedModuleType == 'Command') {
-        cachedModule.command(message);
-      } else if (cachedModuleType == 'Quote') {
-        cachedModules['quote.js'].command(message, cachedModule.reply);
-      }
-      if (cmd != 'warn' && cachedModule.warn == true) {
-        cachedModules['warn.js'].command(message);
-      }
+      try {
+        if (cachedModuleType == 'Command') {
+          cachedModule.command(message);
+        } else if (cachedModuleType == 'Quote') {
+          cachedModules['quote.js'].command(message, cachedModule.reply);
+        }
+      } catch (err) { logger.error(err); }
+      try {
+        if (cmd != 'warn' && cachedModule.warn == true) {
+          cachedModules['warn.js'].command(message);
+        }
+      } catch (err) { logger.error(err); }
     } else {
     }
   } else {
     cachedTriggers.forEach(function(trigger) {
         if (trigger.roles == undefined || findArray(message.member.roles.map(function(x) { return x.name; }), trigger.roles)) {
           if (trigger.trigger(message) == true) {
-              trigger.execute(message);
+              try {
+                trigger.execute(message);
+              } catch (err) { logger.error(err); }
           }
         }
     });
