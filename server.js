@@ -62,7 +62,7 @@ client.on('message', message => {
       } catch (err) { logger.error(err); }
     } else {
     }
-  } else {
+  } else if (message.author.bot == false) {
     cachedTriggers.forEach(function(trigger) {
         if (trigger.roles == undefined || findArray(message.member.roles.map(function(x) { return x.name; }), trigger.roles)) {
           if (trigger.trigger(message) == true) {
