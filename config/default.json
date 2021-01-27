@@ -1,4 +1,5 @@
 {
+  "logdnaKey": "",
   "commandPrefix": ".",
   "logChannel": null,
   "clientLoginToken": null,
