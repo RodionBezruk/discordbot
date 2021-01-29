@@ -1,3 +1,4 @@
+var config = require('config');
 var winston = require('winston');
 winston.emitErrs = true;
 var logger = new winston.Logger({
