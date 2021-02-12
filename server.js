@@ -16,11 +16,13 @@ function findArray(haystack, arr) {
 client.on('ready', () => {
   require("fs").readdirSync('./commands/').forEach(function(file) {
     if (path.extname(file) == '.js') {
+      logger.info(`Loaded module: ${file}`);
       cachedModules[file] = require(`./commands/${file}`);
     }
   });
   require("fs").readdirSync('./triggers/').forEach(function(file) {
     if (path.extname(file) == '.js') {
+      logger.info(`Loaded trigger: ${file}`);
       cachedTriggers.push(require(`./triggers/${file}`));
     }
   });
