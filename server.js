@@ -14,23 +14,9 @@ function findArray(haystack, arr) {
     });
 };
 client.on('ready', () => {
-  require("fs").readdirSync('./commands/').forEach(function(file) {
-    if (path.extname(file) == '.js') {
-      logger.info(`Loaded module: ${file}`);
-      cachedModules[file] = require(`./commands/${file}`);
-    }
-  });
-  require("fs").readdirSync('./triggers/').forEach(function(file) {
-    if (path.extname(file) == '.js') {
-      logger.info(`Loaded trigger: ${file}`);
-      cachedTriggers.push(require(`./triggers/${file}`));
-    }
-  });
   app.logChannel = client.channels.get(config.logChannel);
   app.guild = app.logChannel.guild;
-  data.readWarnings();
-  data.readBans();
-  logger.info('Startup complete. Bot is now online and connected to server.');
+  logger.info('Bot is now online and connected to server.');
 });
 client.on('message', message => {
   if (message.author.bot && message.content.startsWith('.ban') == false) { return; }
@@ -80,4 +66,19 @@ client.on('message', message => {
     });
   }
 });
+require("fs").readdirSync('./commands/').forEach(function(file) {
+  if (path.extname(file) == '.js') {
+    logger.info(`Loaded module: ${file}`);
+    cachedModules[file] = require(`./commands/${file}`);
+  }
+});
+require("fs").readdirSync('./triggers/').forEach(function(file) {
+  if (path.extname(file) == '.js') {
+    logger.info(`Loaded trigger: ${file}`);
+    cachedTriggers.push(require(`./triggers/${file}`));
+  }
+});
+data.readWarnings();
+data.readBans();
+logger.info('Startup completed.');
 client.login(config.clientLoginToken);
