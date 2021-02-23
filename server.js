@@ -66,12 +66,14 @@ client.on('message', message => {
     });
   }
 });
+cachedModules = [];
 require("fs").readdirSync('./commands/').forEach(function(file) {
   if (path.extname(file) == '.js') {
     logger.info(`Loaded module: ${file}`);
     cachedModules[file] = require(`./commands/${file}`);
   }
 });
+cachedTriggers = [];
 require("fs").readdirSync('./triggers/').forEach(function(file) {
   if (path.extname(file) == '.js') {
     logger.info(`Loaded trigger: ${file}`);
